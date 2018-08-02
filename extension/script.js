@@ -4,10 +4,10 @@
 // TODO enable storing and restoring tabs
 // TODO show timeline for all tab activity (open, close, focus, unfocus)
 // TODO undo close/action
-// TODO support closing via keyboard
+// TODO support closing tab via keyboard
 // TODO prevent cursor moving when pressing up/down
-// TODO clean up search UI so windows don't show (use new UI tbh)
-// TODO add history search to end of search
+// TODO add history search to end of search?
+// TODO add option to search google in search function?
 
 Breeze = {};
 
@@ -35,7 +35,6 @@ Breeze.setup = () => {
 };
 
 // TODO prevent keyup
-// TODO select tab by default? (esp. in search if one result)
 Breeze.navigate = (evt) => {
     console.log("navigating");
 
@@ -199,7 +198,6 @@ Breeze.updateTabs = () => {
 
         tabMap.forEach((tabs, windowId) => {
             const win = $(`<div class="windows_container" windowId='${windowId}'></div>`)
-            // TODO add window colors?
             win.css("background-color", Breeze.pastel(windowId));
 
             const title_container = $(`<div class="title_container"></div>`)
