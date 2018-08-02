@@ -1,0 +1,47 @@
+{
+    "manifest_version": 2,
+    "name": "Breeze",
+    "version": "0.0.1",
+    "description": "Make browsing a breeze. Bookmark, session, history managment made fun and easy.",
+    "author": "Nick Reynolds <me@nickreynolds.net> (http://nickreynolds.net)",
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Ctrl+K"
+            }
+        }
+    },
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "browser_action": {
+        "default_title": "Breeze",
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icon.png",
+            "48": "icon.png",
+            "128": "icon.png"
+        }
+    },
+    "content_scripts": [{
+        "matches": ["*://*/*"],
+        "js": [
+            "contentscript.js",
+            "bootstrap.min.css",
+            "jquery-3.3.1.slim.min.js",
+            "popper.min.js",
+            "bootstrap.min.js"
+        ]
+    }],
+    "web_accessible_resources": [
+        "popup.html",
+        "script.js",
+        "icon.png"
+    ],
+    "permissions": [
+        "downloads",
+        "tabs"
+    ]
+}
