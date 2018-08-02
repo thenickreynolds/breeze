@@ -67,7 +67,8 @@ body {
 }
 
 .tab_active {
-	border: 1.5px solid #12ce6a;
+	/* TODO Add this back in some fashion */
+	/* border: 1.5px solid #12ce6a; */
 }
 
 .tab_selected {
