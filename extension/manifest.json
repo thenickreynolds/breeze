@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Breeze",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Make browsing a breeze. Bookmark, session, history managment made fun and easy.",
     "author": "Nick Reynolds <me@nickreynolds.net> (http://nickreynolds.net)",
     "commands": {
@@ -28,11 +28,7 @@
     "content_scripts": [{
         "matches": ["*://*/*"],
         "js": [
-            "contentscript.js",
-            "bootstrap.min.css",
-            "jquery-3.3.1.slim.min.js",
-            "popper.min.js",
-            "bootstrap.min.js"
+            "contentscript.js"
         ]
     }],
     "web_accessible_resources": [
