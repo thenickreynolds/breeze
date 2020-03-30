@@ -48,8 +48,9 @@ Breeze.navigate = (evt) => {
     switch (evt.key) {
         case 'Enter':
             if (hasSelectedTab) {
-                const tabId = parseInt(selectedTab.attr('tabid'));
-                Breeze.focusTab(tabId);
+                const windowId = parseInt(selectedTab.attr('windowId'));
+                const tabId = parseInt(selectedTab.attr('tabId'));
+                Breeze.focusTab(windowId, tabId);
             }
             break;
         case 'ArrowUp':
@@ -123,7 +124,7 @@ Breeze.search = evt => {
 }
 
 Breeze.createTabElement = (tab) => {
-    const tabElem = $(`<div class="item tab" tabId='${tab.id}'></div>`);
+    const tabElem = $(`<div class="item tab" tabId='${tab.id}' windowId='${tab.windowId}'></div>`);
     if (tab.active) {
         tabElem.addClass('tab_active');
     }
@@ -131,12 +132,13 @@ Breeze.createTabElement = (tab) => {
     tabElem.append($(`<img class="tab_favicon" src="${favIconUrl}" />`));
     tabElem.append($(`<div class="tab_title">${tab.title}</div>`));
     tabElem.append($(`<div class="tab_close"></div>`).click(() => Breeze.closeTab(tabElem, tab.id)));
-    tabElem.dblclick(() => Breeze.focusTab(tab.id));
+    tabElem.dblclick(() => Breeze.focusTab(tab.windowId, tab.id));
     return tabElem;
 };
 
-Breeze.focusTab = tabId => {
+Breeze.focusTab = (windowId, tabId) => {
     chrome.tabs.update(tabId, { active: true });
+    chrome.windows.update(windowId, { focused: true });
 };
 
 Breeze.closeTab = (elem, tabId) => {
