@@ -11,7 +11,7 @@ BreezeBackground = {
         console.log(`Tab Updated: T${tab.id} in W${tab.windowId}: ${tab.title}`);
 
         const logChange = (field, name) => {
-            if (field) {
+            if (field && window.debugBreeze === true) {
                 console.log(`> Updated ${name}: ${field}`);
             }
         };
