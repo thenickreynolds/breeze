@@ -1,0 +1,23 @@
+#search_container {
+	width: 100%;
+	background-color: #3367D6;
+	padding: 8px;
+	display: flex;
+	align-items: stretch
+}
+
+#search {
+    border: 0px darkgray solid;
+	padding: 10px;
+	width: 100%;
+	outline-width: 0;
+	background: #2850A8 url('search.png') no-repeat scroll 5px 5px;
+	padding-left: 40px;
+	color: #FFFFFF;
+	font-size: 13px;
+}
+
+#search::placeholder {
+	color: #FFFFFF;
+	opacity: 0.7;
+}
