@@ -18,13 +18,14 @@
     },
     "browser_action": {
         "default_title": "Breeze",
-        "default_popup": "popup.html",
+        "default_popup": "react-popup/index.html",
         "default_icon": {
             "16": "icon.png",
             "48": "icon.png",
             "128": "icon.png"
         }
     },
+    "content_security_policy": "script-src 'self' 'sha256-rRV24oj4XFgP1MbQTUIezLXXoYo+D2/J9JveD+NnrCk='; object-src 'self'",
     "background": {
         "persistent": true,
         "scripts": [
