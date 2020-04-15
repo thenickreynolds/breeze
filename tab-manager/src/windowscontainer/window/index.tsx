@@ -2,37 +2,40 @@ import React from 'react';
 import './styles.css';
 import Tab from './tab';
 
+const numColors = 5;
+
 type WindowProps = {
-  title: string,
-  tabs: string[]
+  id: number,
+  tabs: chrome.tabs.Tab[]
 }
 
 type WindowState = {
-  title: string,
-  tabs: string[],
-  colorClass: string
+  colorClass: string,
 }
 
 class Window extends React.Component<WindowProps, WindowState> {
   constructor(props : WindowProps) {
     super(props);
-    let colorNumber = Math.floor(Math.random() * 5);
-    this.state = { title: props.title, tabs: props.tabs, colorClass: "pastel_" + colorNumber };
-    // set random color
+    this.state = { colorClass: "pastel_" + (this.props.id % numColors) };
   }
 
   render() {
     return (
       <div className={ "windows_container " + this.state.colorClass }>
         <div className="title_container">
-          <div className="window_title">{ this.state.title }</div>
-          <div className="tab_close" />
+          <div className="window_title">Window { this.props.id }</div>
+          <div className="tab_close" onClick={() => this.closeWindow(this.props.id)} />
         </div>
-        { this.state.tabs.map(tab =>
-          <Tab title={tab} />
+
+        { this.props.tabs.map(tab =>
+          <Tab tab={tab} />
         )}
       </div>
-    );
+    )
+  }
+
+  closeWindow(windowId : number) {
+    chrome.windows.remove(windowId);
   }
 }
 
