@@ -1,7 +1,6 @@
 React Version:
 - Rearrange windows
 - Search windows
-- Default search window
 - Support up/down functionality when in search mode
 - Delete non-react version
 

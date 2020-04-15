@@ -1,12 +1,6 @@
-html {
-	width: 400px;
-}
-
 body {
 	font-family: Roboto, system-ui, sans-serif;
 	font-size: 10pt;
 	margin: 0px;
-	/* background-color: #C1C1C1; */
-	background-color: #F8F9FA;
 	-webkit-font-smoothing: antialiased;
 }

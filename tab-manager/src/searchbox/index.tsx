@@ -4,7 +4,7 @@ import './styles.css';
 function SearchBox() {
   return (
     <div id="search_container">
-        <input id="search" type="text" placeholder="Search"></input>
+        <input id="search" type="text" placeholder="Search" autoFocus={true} />
     </div>
   );
 }
