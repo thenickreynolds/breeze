@@ -1,13 +1,15 @@
 React Version:
-- Rearrange windows
+- Rearrange tabs
 - Search windows
 - Support up/down functionality when in search mode
 - Delete non-react version
 
 General:
-- Support naming tabs
-- Enable closing but saving tab groups
-- Timelines of tabs
+- Rename windows
+- Suspend windows
 - Undo close
-- Close tab with keyboard
-- Support rich search (history, etc.)
+- Keyboard support for closing tabs
+
+Timelines:
+- Timelines
+- Timeline rich text support (e.g. day:yesterday)
