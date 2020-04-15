@@ -1,0 +1,14 @@
+React Version:
+- Rearrange windows
+- Search windows
+- Default search window
+- Support up/down functionality when in search mode
+- Delete non-react version
+
+General:
+- Support naming tabs
+- Enable closing but saving tab groups
+- Timelines of tabs
+- Undo close
+- Close tab with keyboard
+- Support rich search (history, etc.)

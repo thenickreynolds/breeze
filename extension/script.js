@@ -1,14 +1,3 @@
-// TODO add color to tabs or some other tracking
-// TODO prevent focus lost if possible
-// TODO suspend tab when not used for a while (add snooze icon)
-// TODO enable storing and restoring tabs
-// TODO show timeline for all tab activity (open, close, focus, unfocus)
-// TODO undo close/action
-// TODO support closing tab via keyboard
-// TODO prevent cursor moving when pressing up/down
-// TODO add history search to end of search?
-// TODO add option to search google in search function?
-
 Breeze = {};
 
 Breeze.pastel = num => {
