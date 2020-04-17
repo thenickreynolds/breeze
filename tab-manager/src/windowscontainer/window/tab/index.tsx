@@ -1,9 +1,10 @@
 import React from 'react';
 import './styles.css';
 import defaultFavicon from './default_favicon.png';
+import { TabInfo } from '../../../types/Types';
 
 type TabProps = {
-  tab: chrome.tabs.Tab
+  tab: TabInfo
 };
 
 class Tab extends React.Component<TabProps> {

@@ -1,63 +1,87 @@
 import React from 'react';
 import './styles.css';
 import Window from './window';
+import { WindowInfo } from '../types/Types'
 
 type WindowsProps = {
 
 };
 
 type WindowsState = {
-  chromeTabs: chrome.tabs.Tab[]
+  windows: WindowInfo[]
 };
 
 class WindowsContainer extends React.Component<WindowsProps, WindowsState> {
   constructor(props : WindowsProps) {
     super(props);
-    this.state = { chromeTabs: [] };
+    this.state = { windows : [] };
   }
 
   render() {
-    console.log("num tabs: " + this.state.chromeTabs.length)
-    let windowTabs = this.createWindowTabsMap(this.state.chromeTabs);
-    
     return (
       <div id="main_container">
-        { Array.from(windowTabs.keys()).map(windowId => {
-            return <Window id={windowId} tabs={windowTabs.get(windowId)!} />
+        { this.state.windows.map(window => {
+            return <Window window={window} />
         })}
       </div>
     );
   }
 
   createWindowTabsMap(tabs : chrome.tabs.Tab[]) {
-    let windowTabs = new Map<number,chrome.tabs.Tab[]>();
+    let windowTabs = new Map<number, WindowInfo>();
+    let windows : WindowInfo[] = [];
+
     tabs.forEach(tab => {
       if (!windowTabs.has(tab.windowId)) {
-        windowTabs.set(tab.windowId, []);
+        let windowInfo = { id: tab.windowId, tabs: [] };
+        windowTabs.set(tab.windowId, windowInfo);
+        windows.push(windowInfo);
       }
-      windowTabs.get(tab.windowId)!.push(tab);
+      let tabInfo = { id: tab.id!, favIconUrl: tab.favIconUrl!, title: tab.title!, windowId : tab.windowId! };
+      windowTabs.get(tab.windowId)!.tabs.push(tabInfo);
     });
 
-    return windowTabs;
+    return windows;
+  }
+
+  isInChrome() {
+    return window.chrome && chrome.runtime && chrome.runtime.id;
   }
 
   updateTabs() {
-    console.log('updating tabs');
-    chrome.tabs.query({}, tabs => {
-      this.setState(() => this.setState({ chromeTabs: tabs }));
-    });
+    if (this.isInChrome()) {
+      chrome.tabs.query({}, tabs => {
+        this.setState(() => this.setState({ windows: this.createWindowTabsMap(tabs) }));
+      });
+    } else {
+      // fill with some test data instead
+      this.setState({ windows: this.createTestWindows() });
+    }
+  }
+
+  createTestWindows() {
+    let windows = [];
+    let tabId = 0;
+    for (let windowId = 0; windowId < 5; windowId++) {
+      let tabs = [];
+      for (let i = 0; i < 5; i++) {
+        tabs.push({ windowId: windowId, id: tabId++, favIconUrl: '', title: 'Test title ' + tabId });
+      }
+      windows.push( { id: windowId, tabs: tabs });
+    }
+    return windows;
   }
 
   componentDidMount() {
-    if (window.chrome && chrome.runtime && chrome.runtime.id) {
+    if (this.isInChrome()) {
       chrome.tabs.onCreated.addListener(() => this.updateTabs());
       chrome.tabs.onMoved.addListener(() => this.updateTabs());
       chrome.tabs.onRemoved.addListener(() => this.updateTabs());
       chrome.tabs.onDetached.addListener(() => this.updateTabs());
       chrome.tabs.onAttached.addListener(() => this.updateTabs());
-
-      this.updateTabs();
     }
+
+    this.updateTabs();
   }
 
   componentDidUnmount() {

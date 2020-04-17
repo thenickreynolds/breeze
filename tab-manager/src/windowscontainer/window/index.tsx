@@ -1,12 +1,12 @@
 import React from 'react';
 import './styles.css';
 import Tab from './tab';
+import { WindowInfo, TabInfo } from '../../types/Types';
 
 const numColors = 5;
 
 type WindowProps = {
-  id: number,
-  tabs: chrome.tabs.Tab[]
+  window: WindowInfo;
 }
 
 type WindowState = {
@@ -16,18 +16,18 @@ type WindowState = {
 class Window extends React.Component<WindowProps, WindowState> {
   constructor(props : WindowProps) {
     super(props);
-    this.state = { colorClass: "pastel_" + (this.props.id % numColors) };
+    this.state = { colorClass: "pastel_" + (this.props.window.id % numColors) };
   }
 
   render() {
     return (
       <div className={ "windows_container " + this.state.colorClass }>
         <div className="title_container">
-          <div className="window_title">Window { this.props.id }</div>
-          <div className="tab_close" onClick={() => this.closeWindow(this.props.id)} />
+          <div className="window_title">Window { this.props.window.id }</div>
+          <div className="tab_close" onClick={() => this.closeWindow(this.props.window.id)} />
         </div>
 
-        { this.props.tabs.map(tab =>
+        { this.props.window.tabs.map((tab: TabInfo) =>
           <Tab tab={tab} />
         )}
       </div>
