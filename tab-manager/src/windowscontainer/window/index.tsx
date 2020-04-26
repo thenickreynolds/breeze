@@ -30,9 +30,7 @@ class Window extends React.Component<WindowProps, WindowState> {
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="tabs">
             {(provided, snapshot) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}
-                // style={getListStyle(snapshot.isDraggingOver)}
-                >
+              <div {...provided.droppableProps} ref={provided.innerRef}>
                 { this.props.window.tabs.map((tab, index) =>
                   <Tab tab={tab} index={index} />
                 )}

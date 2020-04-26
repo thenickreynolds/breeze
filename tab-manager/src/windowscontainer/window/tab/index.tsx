@@ -19,8 +19,6 @@ class Tab extends React.Component<TabProps> {
     let tab = this.props.tab;
     let favIconUrl = tab.favIconUrl || defaultFavicon;
 
-    
-
     return (
       <Draggable key={tab.id} draggableId={tab.id.toString()} index={this.props.index}>
         {(provided, snapshot) => (
