@@ -5,26 +5,32 @@ import Tab from '../tab';
 
 type SearchResultsProps = {
   tabs : TabInfo[],
-  searchText : string,
+  selectedTabIndex : number,
 }
 
 class SearchResults extends React.Component<SearchResultsProps> {
-  render() {
-    const searchText = this.props.searchText.trim().toLowerCase();
+  constructor(props : SearchResultsProps) {
+    super(props);
+    this.state = { selectedTabIndex: 0 };
+  }
 
-    const tabs = this.props.tabs.filter(tab => tab.title.toLowerCase().search(searchText) >= 0);
+  render() {
+    if (this.props.tabs.length === 0) {
+      return (<div className="results_text">No results found</div>)
+    }
 
     return (
       <div>
-        { tabs.map((tab, index) =>
-          <Tab key={tab.id} tab={tab} index={index} highlight={false} />
+        { this.props.tabs.map((tab, index) =>
+          <Tab
+            key={tab.id}
+            tab={tab}
+            index={index}
+            outline={index === this.props.selectedTabIndex}
+          />
         )}
       </div>
     );
-  }
-
-  searchTextUpdated(text : string) {
-    this.setState({searchText: text});
   }
 }
 

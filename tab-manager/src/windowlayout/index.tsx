@@ -5,34 +5,45 @@ import WindowsContainer from '../windowscontainer';
 import classNames from 'classnames';
 import SearchResults from '../searchresults';
 import Utils from '../types/Utils';
-import { WindowInfo } from '../types/Types';
+import { WindowInfo, TabInfo } from '../types/Types';
 
 type WindowProps = {
 }
 
 type WindowState = {
-    searchText : string,
     windows: WindowInfo[],
+    searchTabs: TabInfo[],
+    searchText: string,
+    selectedTabIndex: number,
 }
 
 class WindowLayout extends React.Component<WindowProps,WindowState> {
   constructor(props : WindowProps) {
     super(props);
-    this.state = { searchText: "", windows: [] };
+    this.state = { windows: [], selectedTabIndex: 0, searchText: "", searchTabs: [] };
     this.searchTextUpdated = this.searchTextUpdated.bind(this);
+    this.upPressed = this.upPressed.bind(this);
+    this.downPressed = this.downPressed.bind(this);
+    this.enterPressed = this.enterPressed.bind(this);
   }
 
   render() {
-    const tabs = this.state.windows.flatMap(window => window.tabs);
-
     return (
       <div>
-        <SearchBox searchUpdated={this.searchTextUpdated} />
-        <div className={classNames({ hidden: this.state.searchText.length > 0 })}>
-            <WindowsContainer windows={this.state.windows} />
+        <SearchBox
+          searchUpdated={this.searchTextUpdated}
+          upPressed={this.upPressed}
+          downPressed={this.downPressed}
+          enterPressed={this.enterPressed}
+        />
+        <div className={classNames({ hidden: this.state.searchText.length !== 0 })}>
+          <WindowsContainer windows={this.state.windows} />
         </div>
         <div className={classNames({ hidden: this.state.searchText.length === 0 })}>
-            <SearchResults searchText={this.state.searchText} tabs={tabs} />
+          <SearchResults
+            tabs={this.state.searchTabs}
+            selectedTabIndex={this.state.selectedTabIndex}
+          />
         </div>
       </div>
     );
@@ -89,7 +100,37 @@ class WindowLayout extends React.Component<WindowProps,WindowState> {
   }
 
   searchTextUpdated(text : string) {
-    this.setState({searchText: text});
+    const searchText = text.trim().toLowerCase();
+    const filteredTabs = this.state.windows.flatMap(window => window.tabs).filter(tab => tab.title.toLowerCase().search(searchText) >= 0);
+
+    this.setState({searchTabs: filteredTabs, selectedTabIndex: 0, searchText: searchText});
+  }
+
+  upPressed() {
+    this.updateSelectedTabIndex(-1);
+  }
+
+  downPressed() {
+    this.updateSelectedTabIndex(1);
+  }
+
+  updateSelectedTabIndex(offset: number) {
+    const numSearchTabs = this.state.searchTabs.length;
+
+    if (numSearchTabs === 0) {
+      return;
+    }
+
+    const updatedSelectedTabIndex = (this.state.selectedTabIndex + offset + numSearchTabs) % numSearchTabs;
+    this.setState({selectedTabIndex: updatedSelectedTabIndex});
+  }
+
+  enterPressed() {
+    if (this.state.searchTabs.length > 0 && Utils.isChromeExtension()) {
+      const tab = this.state.searchTabs[this.state.selectedTabIndex];
+      chrome.tabs.update(tab.id, { selected: true });
+      chrome.windows.update(tab.windowId, { focused: true });
+    }
   }
 }
 

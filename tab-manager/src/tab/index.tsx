@@ -9,9 +9,15 @@ type TabProps = {
   tab: TabInfo,
   index: number,
   highlight: boolean,
+  outline: boolean,
 };
 
 class Tab extends React.Component<TabProps> {
+  static defaultProps = {
+    highlight: false,
+    outline: false,
+  };
+
   render() {
     let tab = this.props.tab;
     let favIconUrl = tab.favIconUrl || defaultFavicon;
@@ -22,6 +28,7 @@ class Tab extends React.Component<TabProps> {
           item: true,
           tab: true,
           dragging: this.props.highlight,
+          tab_selected: this.props.outline,
         })}
         onDoubleClick={() => this.activateTab(tab.id!, tab.windowId!)}
       >
