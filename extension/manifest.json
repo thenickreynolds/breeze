@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Breeze",
-    "version": "0.2",
+    "version": "0.3",
     "description": "Make browsing a breeze. Bookmark, session, history managment made fun and easy.",
     "author": "Nick Reynolds <me@nickreynolds.net> (http://nickreynolds.net)",
     "commands": {
