@@ -12,10 +12,6 @@ type TabProps = {
 };
 
 class Tab extends React.Component<TabProps> {
-  constructor(props : TabProps) {
-    super(props);
-  }
-
   render() {
     let tab = this.props.tab;
     let favIconUrl = tab.favIconUrl || defaultFavicon;

@@ -3,6 +3,7 @@ import './styles.css';
 import Window from './window';
 import { WindowInfo } from '../types/Types'
 import Utils from '../types/Utils';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 type WindowsProps = {
 
@@ -16,14 +17,17 @@ class WindowsContainer extends React.Component<WindowsProps, WindowsState> {
   constructor(props : WindowsProps) {
     super(props);
     this.state = { windows : [] };
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   render() {
     return (
       <div id="main_container">
-        { this.state.windows.map(window => {
-            return <Window window={window} />
-        })}
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          { this.state.windows.map(window => {
+            return <Window key={window.id} window={window} />
+          })}
+        </DragDropContext>
       </div>
     );
   }
@@ -52,21 +56,8 @@ class WindowsContainer extends React.Component<WindowsProps, WindowsState> {
       });
     } else {
       // fill with some test data instead
-      this.setState({ windows: this.createTestWindows() });
+      this.setState({ windows: Utils.createTestWindows() });
     }
-  }
-
-  createTestWindows() {
-    let windows = [];
-    let tabId = 0;
-    for (let windowId = 0; windowId < 5; windowId++) {
-      let tabs = [];
-      for (let i = 0; i < 5; i++) {
-        tabs.push({ windowId: windowId, id: tabId++, favIconUrl: '', title: 'Test title ' + tabId });
-      }
-      windows.push( { id: windowId, tabs: tabs });
-    }
-    return windows;
   }
 
   componentDidMount() {
@@ -81,13 +72,27 @@ class WindowsContainer extends React.Component<WindowsProps, WindowsState> {
     this.updateTabs();
   }
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     if (Utils.isChromeExtension()) {
       chrome.tabs.onCreated.removeListener(() => this.updateTabs());
       chrome.tabs.onMoved.removeListener(() => this.updateTabs());
       chrome.tabs.onRemoved.removeListener(() => this.updateTabs());
       chrome.tabs.onDetached.removeListener(() => this.updateTabs());
       chrome.tabs.onAttached.removeListener(() => this.updateTabs());
+    }
+  }
+
+  onDragEnd(result : DropResult) {
+    const tabId = Number(result.draggableId);
+    const windowId = Number(result.destination?.droppableId);
+
+    const tabs = this.state.windows.flatMap(window => window.tabs);
+    const tab = tabs.find(tab => tab.id === tabId);
+
+    console.log(`Moving tab ${tabId} to window ${windowId}`);
+
+    if (Utils.isChromeExtension() && tab && result.destination) {
+      chrome.tabs.move(tabId, {windowId: windowId, index: result.destination.index});
     }
   }
 }
