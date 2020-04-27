@@ -13,7 +13,6 @@ class SearchResults extends React.Component<SearchResultsProps> {
     const searchText = this.props.searchText.trim().toLowerCase();
 
     const tabs = this.props.tabs.filter(tab => tab.title.toLowerCase().search(searchText) >= 0);
-    console.log(`Filtering to "${this.props.searchText}" and found ${tabs.length} tabs`);
 
     return (
       <div>
@@ -25,7 +24,6 @@ class SearchResults extends React.Component<SearchResultsProps> {
   }
 
   searchTextUpdated(text : string) {
-    console.log(`Search text updated: ${text}`);
     this.setState({searchText: text});
   }
 }

@@ -89,7 +89,6 @@ class WindowLayout extends React.Component<WindowProps,WindowState> {
   }
 
   searchTextUpdated(text : string) {
-    console.log(`Search text updated: ${text}`);
     this.setState({searchText: text});
   }
 }
