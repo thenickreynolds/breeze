@@ -2,6 +2,7 @@ import React from 'react';
 import './styles.css';
 import Window from './window';
 import { WindowInfo } from '../types/Types'
+import Utils from '../types/Utils';
 
 type WindowsProps = {
 
@@ -44,12 +45,8 @@ class WindowsContainer extends React.Component<WindowsProps, WindowsState> {
     return windows;
   }
 
-  isInChrome() {
-    return window.chrome && chrome.runtime && chrome.runtime.id;
-  }
-
   updateTabs() {
-    if (this.isInChrome()) {
+    if (Utils.isChromeExtension()) {
       chrome.tabs.query({}, tabs => {
         this.setState(() => this.setState({ windows: this.createWindowTabsMap(tabs) }));
       });
@@ -73,7 +70,7 @@ class WindowsContainer extends React.Component<WindowsProps, WindowsState> {
   }
 
   componentDidMount() {
-    if (this.isInChrome()) {
+    if (Utils.isChromeExtension()) {
       chrome.tabs.onCreated.addListener(() => this.updateTabs());
       chrome.tabs.onMoved.addListener(() => this.updateTabs());
       chrome.tabs.onRemoved.addListener(() => this.updateTabs());
@@ -85,7 +82,7 @@ class WindowsContainer extends React.Component<WindowsProps, WindowsState> {
   }
 
   componentDidUnmount() {
-    if (window.chrome && chrome.runtime && chrome.runtime.id) {
+    if (Utils.isChromeExtension()) {
       chrome.tabs.onCreated.removeListener(() => this.updateTabs());
       chrome.tabs.onMoved.removeListener(() => this.updateTabs());
       chrome.tabs.onRemoved.removeListener(() => this.updateTabs());

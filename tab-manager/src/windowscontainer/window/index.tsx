@@ -2,7 +2,8 @@ import React from 'react';
 import './styles.css';
 import Tab from './tab';
 import { WindowInfo, TabInfo } from '../../types/Types';
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import Utils from '../../types/Utils';
 
 const numColors = 5;
 
@@ -18,6 +19,7 @@ class Window extends React.Component<WindowProps, WindowState> {
   constructor(props : WindowProps) {
     super(props);
     this.state = { colorClass: "pastel_" + (this.props.window.id % numColors) };
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   render() {
@@ -45,11 +47,18 @@ class Window extends React.Component<WindowProps, WindowState> {
   }
 
   closeWindow(windowId : number) {
-    chrome.windows.remove(windowId);
+    if (Utils.isChromeExtension()) {
+      chrome.windows.remove(windowId);
+    }
   }
 
-  onDragEnd() {
-    // TODO
+  onDragEnd(result : DropResult) {
+    const tabId = Number(result.draggableId);
+    const tab = this.props.window.tabs.find(tab => tab.id === tabId);
+
+    if (Utils.isChromeExtension() && tab && result.destination) {
+      chrome.tabs.move(tabId, {windowId: tab.windowId, index: result.destination.index});
+    }
   }
 }
 

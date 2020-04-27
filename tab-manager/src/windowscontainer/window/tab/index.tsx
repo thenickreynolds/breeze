@@ -4,6 +4,7 @@ import defaultFavicon from './default_favicon.png';
 import { TabInfo } from '../../../types/Types';
 import { Draggable } from "react-beautiful-dnd";
 import classNames from "classnames";
+import Utils from '../../../types/Utils';
 
 type TabProps = {
   tab: TabInfo,
@@ -46,13 +47,17 @@ class Tab extends React.Component<TabProps> {
   }
 
   closeTab(tabId : number) {
-    chrome.tabs.remove(tabId);
+    if (Utils.isChromeExtension()) {
+      chrome.tabs.remove(tabId);
+    }
   }
 
   activateTab(tabId : number, windowId : number) {
     console.log("double click");
-    chrome.tabs.update(tabId, { active: true });
-    chrome.windows.update(windowId, { focused: true });
+    if (Utils.isChromeExtension()) {
+      chrome.tabs.update(tabId, { active: true });
+      chrome.windows.update(windowId, { focused: true });
+    }
   }
 }
 
