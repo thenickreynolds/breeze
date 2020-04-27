@@ -25,22 +25,6 @@
             "128": "icon.png"
         }
     },
-    "background": {
-        "persistent": true,
-        "scripts": [
-            "js/jquery-3.3.1.slim.min.js",
-            "js/bootstrap.min.js",
-            "js/popper.min.js",
-            "js/Sortable.js",
-            "background.js",
-            "script.js"
-        ]
-    },
-    "web_accessible_resources": [
-        "popup.html",
-        "script.js",
-        "icon.png"
-    ],
     "permissions": [
         "tabs"
     ]
