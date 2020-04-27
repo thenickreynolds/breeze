@@ -1,9 +1,9 @@
 import React from 'react';
 import './styles.css';
-import Tab from './tab';
-import { WindowInfo } from '../../types/Types';
+import { WindowInfo } from '../types/Types';
 import { Droppable } from "react-beautiful-dnd";
-import Utils from '../../types/Utils';
+import Utils from '../types/Utils';
+import DraggableTab from '../draggabletab';
 
 const numColors = 5;
 
@@ -32,9 +32,8 @@ class Window extends React.Component<WindowProps, WindowState> {
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               { this.props.window.tabs.map((tab, index) =>
-                <Tab key={tab.id} tab={tab} index={index} />
+                <DraggableTab key={tab.id} tab={tab} index={index} />
               )}
-
               {provided.placeholder}
             </div>
           )}            

@@ -1,13 +1,11 @@
 import React from 'react';
 import './App.css';
-import WindowsContainer from './windowscontainer'
-import SearchBox from './searchbox'
+import WindowLayout from './windowlayout';
 
 function App() {
   return (
     <div className="App">
-      <SearchBox />
-      <WindowsContainer />
+      <WindowLayout />
     </div>
   );
 }

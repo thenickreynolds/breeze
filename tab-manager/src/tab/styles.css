@@ -2,7 +2,6 @@
 	padding: 5px;
 	margin: 8px;
 	user-select: none;
-	cursor: grab;
 	display: flex;
 	flex-direction: row;
 	background-color: #D0D0D0;
